@@ -1,24 +1,19 @@
-const Model = require('../models/tables');
-
-
+const Answer = require('../models/Answer');
+const Question = require('../models/Question');
+const User = require('../models/User');
+const Comment = require('../models/Comment');
+const getTimeStamp = require('../models/helper');
 //functions to handle routes		
 	exports.getAnswersForAQuestion = (req, res) => {
-  	//answers come with the users' information 
-    const question_id = req.params.id;
-    const Answers = new Model('answers')
-    var sql = `SELECT answers.*, users.name,
-                users.username FROM ${Answers.table} 
-                INNER JOIN users ON answers.user_id = users.id
-                INNER JOIN questions ON answers.question_id = questions.id
-                WHERE questions.id=${question_id} ORDER BY answers.upvotes DESC`;
-		Answers.executeQuery(sql)
-		.then(result => {
-    	if (result.length){
+    //answers come with the users' information 
+    var question_id = req.params.id;
+    Answer.find({question_id:question_id}).sort({date_posted:-1}).then(result => {
+      if (result.length){
         res.status(200).json({count:result.length, result: result});
       }
       res.status(201).json({count:result.length, message:"no answer for this question"})
-    }).catch(error => {
-        //res.status(500).json({message:"error occured while trying to retrieve Answers"})
+      }).catch(error => {
+        res.status(500).json({message:"error occured while trying to retrieve Answers"})
         console.log(error.message)
       })
     }
@@ -27,52 +22,56 @@ const Model = require('../models/tables');
     //this function returns the comments by users for a particular Answer
     	const question_id = req.params.qid;
       const answer_id = req.params.id;
-      const Comments = new Model('comments')
-      const sql = `SELECT comments.*, users.name,
-      users.username FROM ${Comments.table} 
-      INNER JOIN users ON comments.user_id = users.id
-      INNER JOIN questions ON comments.question_id = questions.id
-      INNER JOIN answers ON comments.answer_id = answers.id
-      WHERE answers.id=${answer_id} AND questions.id=${question_id} ORDER BY comments.date_posted DESC`;
-			Comments.executeQuery(sql).then(result => {
+      const constraints = {
+        question_id:question_id,
+        answer_id:answer_id
+      }
+      Comment.find(constraints)
+      .then(result => {
         if (result.length){
           res.status(200).json({ count:result.length, result:result});
         }
         res.status(404).json({count:result.length, message:"no comment for this answer"})
       }).catch(error => {
-        	res.status(500).json({message:"error occured while trying to retrieve comments"})
-          console.log(error.message)
+        res.status(500).json({message:"error occured while trying to retrieve comments"})
+        console.log(error.message)
       })
-    }
+  }
 
     exports.postAnswerToAQuestion = (req, res) => {
-    	const newAnswer = {
-				user_id:req.body.user_id,
-				description:req.body.description,
-				question_id:req.params.id
-      }
-      const Answers = new Model('answers');
-			Answers.insert(newAnswer)
-			.then(result => {
-        res.status(200).json({result, message:"answer successfully posted!"})
-      }).catch(error => {
+      console.log(req.params.id)
+      User.findById(req.body.user_id).then(user => {
+        const newAnswer = {
+          user:user,
+          description:req.body.description,
+          question_id:req.params.id,
+          upvotes: 0,
+          preferred:false,
+          date_posted: getTimeStamp()
+        };
+        Answer.create(newAnswer).then(answer => {
+          res.status(200).json({answer, message:"answer successfully posted!"})
+        }).then(error => {
           console.log(error.message)
-          res.status(500).json({message:"something went wrong from the server"})
+          res.send(error.message)
+        })
+      }).then(error => {
+        console.log(error.message)
+        res.send(error.message)
       })
     }
 
   exports.upvoteAnswer  = (req, res) => {
     const answer_id = req.params.id;
-    const Answers = new Model('answers')
-    var sql = `SELECT upvotes FROM ${Answers.table} WHERE id = ${answer_id}`;
-		Answers.executeSQL(sql)
+    Answer.findById(answer_id)
 		.then(result => {
-    	var currentUpvotes = result[0].upvotes;
+      console.log(result)
+    	var currentUpvotes = parseInt(result.upvotes);
     	var newUpvotes = currentUpvotes + 1;
-			Answers.update({upvotes:newUpvotes}, {id: answer_id})
+			Answer.updateOne({_id: answer_id},{$set:{upvotes:newUpvotes}})
 			.then(() => {
-          Answers.find({id:answer_id}).then(updatedrow => {
-            res.status(200).json({status:"updated", result:updatedrow[0]});
+          Answer.findById(answer_id).then(updatedrow => {
+            res.status(200).json({status:"updated", result:updatedrow});
           })
       }).catch(error => {
           res.status(500).json(error.message);
@@ -82,32 +81,37 @@ const Model = require('../models/tables');
 
   exports.acceptAsPreferred = (req, res) => {
 		const answer_id = req.params.id;
-		const user_id = req.params.userid;
-		const Answers = new Model('answers')
-		Answers.update({preferred:1}, {id:answer_id})
-		.then(() => {
-			Answers.find({id:answer_id}).then(updatedrow => {
-				res.status(200).json({status:"updated", result:updatedrow[0]});
-			})
-		}).catch(error => {
-			res.status(500).json(error.message);
-		})
-
-  }
+    const question_id = req.params.qid;
+    Question.updateOne({_id:question_id},{$set : {preferred_id:answer_id}})
+    .then(() => {
+        Question.findById(question_id).then(updatedrow => {
+          res.status(200).json({status:"updated", result:updatedrow});
+        })
+      })
+    }
 
   exports.createComment = (req, res) => {
-    const newComment = {
-      user_id:req.body.user_id,
-      text:req.body.text,
-      question_id:req.params.qid,
-      answer_id:req.params.id
-    }
-    const Comments = new Model('comments');
-    Comments.insert(newComment).then(result => {
-                res.status(200).json({result, message:"comment successfully posted!"})
+    User.findById(req.body.user_id,{password:0,date_registed:0})
+    .then(user => {
+      console.log(user)
+      const newComment = {
+        user:user,
+        text:req.body.text,
+        question_id:req.params.qid,
+        answer_id:req.params.id,
+        likes:0,
+        date_posted: getTimeStamp()
+      }
+      Comment.create(newComment)
+      .then(result => {
+        res.status(200).json(result)
+      }).catch(error => {
+        res.status(201).json({error:"couldn't create comment"})
+      })
     }).catch(error => {
-        console.log(error.message)
-        res.status(500).json({message:"something went wrong from the server"})
+      console.log(error)
     })
+    
+    
 	}
 	

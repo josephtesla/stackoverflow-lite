@@ -1,12 +1,12 @@
-const Model = require('../models/tables');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const config = require('../helpers/config');
-const Users = new Model('users');
+const secretconfig = require('../helpers/config');
+const User = require('../models/User');
+const getTimeStamp = require('../models/helper');
 
 //functions to handle routes
 	exports.authRegister = (req, res) => {
-		Users.find({ username: req.body.username }).then(result => {
+		User.find({ username: req.body.username }).then(result => {
 			//if username is taken
 			if (result.length) {
 				res.status(401).json({ auth: false, message: "username already exists!" })
@@ -20,14 +20,16 @@ const Users = new Model('users');
 					const newUser = {
 						name: req.body.name,
 						username: req.body.username,
-						password: hashedPassword
+						password: hashedPassword,
+						date_registed: getTimeStamp()
 					}
-					Users.insert(newUser).then(user => {
+					User.create(newUser).then(user => {
 						//create token
-						var token = jwt.sign({ id: user[0].id }, config.secretconfig.secret,
+						var token = jwt.sign({ id: user._id }, secretconfig.secret,
 							{ expiresIn: 86400 }); //token expires in 24hours
-						res.status(200).send({ auth: true, token: token, user:user[0] });
-					}).catch(() => {
+						res.status(200).send({ auth: true, token: token, user:user });
+					}).catch((err) => {
+						console.log(err)
 						res.status(500).send("there was a problem registering the user");
 					});
 				});
@@ -37,7 +39,7 @@ const Users = new Model('users');
 
 exports.authLogin = (req, res) => {
 		//find user by username
-	Users.find({ username: req.body.username }).then(user => {
+	User.find({ username: req.body.username }).then(user => {
 				//if no user
 		if (user.length == 0) {
 			res.status(404).send({message:'User not found'});
@@ -46,10 +48,9 @@ exports.authLogin = (req, res) => {
 					//compare passwords synchronously
 			var isMatch = bcrypt.compareSync(req.body.password, user[0].password);
 			if (isMatch) {
-				var token = jwt.sign({ id: user[0].id },
-					config.secretconfig.secret,
+				var token = jwt.sign({ id: user._id },secretconfig.secret,
 					{ expiresIn: 86400 });//expires in 24hours
-					res.status(200).send({ auth: true, token: token,	user:user[0] });
+					res.status(200).send({ auth: true, token: token,	user:user });
 			}
 			else {
 				res.status(401).send({ auth: false, token: null ,message:"incorrect password/username"});

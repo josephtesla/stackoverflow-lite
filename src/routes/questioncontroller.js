@@ -1,57 +1,55 @@
-const Model = require('../models/tables');
-const express = require('express');
+const User = require('../models/User');
+const Question = require('../models/Question');
+const getTimeStamp = require('../models/helper');
 
 //functions to handle routes
     exports.getAllQuestions = (req, res) => {
-    //get all questions along with user
-    const Questions = new Model('questions')
-    var sql = `SELECT questions.*,users.name,users.username FROM ${Questions.table}
-                INNER JOIN users ON questions.user_id = users.id ORDER BY date_created DESC`;
-		Questions.executeQuery(sql)
-		.then(result => {
-    	res.status(200).json(result);
+    Question.find().sort({date_posted: -1}).then(questions => {
+      res.status(200).json(questions)
     }).catch(error => {
-      	res.status(500).json({message:"error occured while trying to retrieve question"})
-        console.log(error.message)
-      })
+      res.status(500).json({message:"error occured while trying to retrieve questions"})
+      console.log(error.message)
+    })
   }
 
   exports.postQuestion = (req, res) => {
-    const newQuestion = {
-      user_id:req.body.user_id,
-      title:req.body.title,
-      description:req.body.description
-    };
-    const Questions = new Model('questions');
-    Questions.insert(newQuestion).then(result => {
-      res.status(200).json(result)
-    }).catch(error => {
-      res.status(500).json({message:"something went wrong from the server"})
+    User.findById(req.body.user_id, {password:0},(err, user) => {
+      if(err) {console.log(err)}
+      else{
+        const newQuestion = {
+          user:user,
+          title:req.body.title,
+          description:req.body.description,
+          tags:req.body.tags,
+          date_posted:getTimeStamp()
+        };
+        Question.create(newQuestion).then(question => {
+          res.status(200).json(question);
+        }).catch(error => {
+          res.status(500).json({message:"something went wrong from the server"})
+        })
+      }
     })
   }
 
   exports.deleteQuestion = (req, res) => {
     const question_id = req.params.id;
-    const Questions = new Model('questions');
-    Questions.delete({id: question_id}.then(() => {
-      res.status(200).json({message:"question successfully deleted"})
+    Question.deleteOne({_id:question_id}).then(deleted => {
+      res.status(200).json({status:"ok", message:"successfully deleted"});
     }).catch(error => {
-        console.log(error.stack)
-        res.status(500).json({message:"couldn't delete question"});
-    }));
+      console.log(error.message)
+        res.status(500).json({message:"error occured while trying to delete"})
+    })
   }
 
   exports.getSingleQuestion = (req, res) => {
     //get single question along with poster details
     const question_id = req.params.id;
-    const Questions = new Model('questions')
-    var sql = `SELECT questions.*, users.name,users.username FROM ${Questions.table} 
-          		INNER JOIN users ON questions.user_id = users.id WHERE questions.id=${question_id}`;
-    Questions.executeQuery(sql).then(result => {
-                res.status(200).json(result[0]);
-    }).catch(error => {
-        res.status(500).json({message:"error occured while trying to retrieve question"})
-        console.log(error.message)
+    Question.findById(question_id).then(question => {
+      res.status(200).json(question);
+    }).catch(error  =>  {
+      res.status(500).json({message:"error occured while trying to retrieve question"})
+      console.log(error.message)
     })
   }
 

@@ -1,6 +1,3 @@
-const mysql = require('mysql');
-const {dbOptions} = require('../helpers/config');
+const mongoose = require('mongoose');
 
-const Pool = mysql.createPool(dbOptions);
-
-module.exports = Pool;
+module.exports = mongoose;

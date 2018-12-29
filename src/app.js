@@ -5,6 +5,9 @@ const Answercontroller = require('./routes/answercontroller');
 const Authcontroller = require('./routes/authcontroller');
 const Usercontroller = require('./routes/usercontroller');
 const verifyToken = require('./middleware/verify');
+const mongoose = require('mongoose');
+mongoose.connect("mongodb://josephtesla:tesla98@ds145053.mlab.com:45053/stackoverflow")
+.then(conn => {console.log("connected")}).catch(err => {console.log(err)})
 var app = express();
 
 //body-parser middleware
@@ -51,7 +54,7 @@ app.get('/api/v1/answers/:qid/:id/comments', Answercontroller.getUsersComments)
 
 app.put('/api/v1/answers/:id/:userid/upvote', Answercontroller.upvoteAnswer)
 
-app.put('/api/v1/answers/:id/accept', Answercontroller.acceptAsPreferred)
+app.put('/api/v1/answers/:qid/:id/accept', Answercontroller.acceptAsPreferred)
 
 app.get('/api/v1/search/questions', Questioncontroller.searchQuestions);
 
