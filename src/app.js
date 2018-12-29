@@ -58,6 +58,21 @@ app.put('/api/v1/answers/:qid/:id/accept', Answercontroller.acceptAsPreferred)
 
 app.get('/api/v1/search/questions', Questioncontroller.searchQuestions);
 
+//error handlers
+app.use((req, res, next) => {
+    const error = new Error('Not found');
+    error.status = 404;
+    next(error);
+});
+app.use((error, req, res, next) => {
+    res.status(error.status || 500);
+    res.json({
+      error: {
+        message: error.message,
+      },
+    });
+  });
+
 
 app.listen(process.env.PORT ||  8000  ,() =>{
     console.log("server started at port: " + 8000);
