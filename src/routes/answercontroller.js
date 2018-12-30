@@ -31,7 +31,7 @@ const getTimeStamp = require('../models/helper');
         if (result.length){
           res.status(200).json({ count:result.length, result:result});
         }
-        res.status(404).json({count:result.length, message:"no comment for this answer"})
+        res.status(200).json({count:result.length, message:"no comment for this answer"})
       }).catch(error => {
         res.status(500).json({message:"error occured while trying to retrieve comments"})
         console.log(error.message)

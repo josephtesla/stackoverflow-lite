@@ -9,7 +9,7 @@ const getTimeStamp = require('../models/helper');
 		User.find({ username: req.body.username }).then(result => {
 			//if username is taken
 			if (result.length) {
-				res.status(401).json({ auth: false, message: "username already exists!" })
+				res.json({ auth: false, message: "username already exists!" })
 			}
 			else	{
 				//pass hashed password in callback
@@ -25,6 +25,7 @@ const getTimeStamp = require('../models/helper');
 					}
 					User.create(newUser).then(user => {
 						//create token
+						user.password = "";
 						var token = jwt.sign({ id: user._id }, secretconfig.secret,
 							{ expiresIn: 86400 }); //token expires in 24hours
 						res.status(200).send({ auth: true, token: token, user:user });
@@ -42,7 +43,7 @@ exports.authLogin = (req, res) => {
 	User.find({ username: req.body.username }).then(user => {
 				//if no user
 		if (user.length == 0) {
-			res.status(404).send({message:'User not found'});
+			res.status(404).json({message:'username not found'});
 		}
 		else	{
 					//compare passwords synchronously
@@ -50,10 +51,10 @@ exports.authLogin = (req, res) => {
 			if (isMatch) {
 				var token = jwt.sign({ id: user._id },secretconfig.secret,
 					{ expiresIn: 86400 });//expires in 24hours
-					res.status(200).send({ auth: true, token: token,	user:user });
+					res.status(200).send({ auth: true, token: token,	user:user[0] });
 			}
 			else {
-				res.status(401).send({ auth: false, token: null ,message:"incorrect password/username"});
+				res.status(401).json({ auth: false, token: null ,message:"incorrect password/username"});
 			}
 		}
 	}).catch((error) => {
