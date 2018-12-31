@@ -7,7 +7,7 @@ const Usercontroller = require('./routes/usercontroller');
 const verifyToken = require('./middleware/verify');
 const mongoose = require('mongoose');
 const cors = require('cors')
-mongoose.connect("mongodb://josephtesla:tesla98@ds145053.mlab.com:45053/stackoverflow")
+mongoose.connect("mongodb://localhost/stackoverflow")
 .then(conn => {console.log("connected")}).catch(err => {console.log(err)})
 var app = express();
 
@@ -43,6 +43,8 @@ app.get('/api/v1/questions/:id',  Questioncontroller.getSingleQuestion);
 
 app.get('/api/v1/questions/:id/answers',  Answercontroller.getAnswersForAQuestion);
 
+app.get('/api/v1/answers/:id',  Answercontroller.getSingleAnswer)
+
 app.post('/api/v1/questions/:id/answers',  Answercontroller.postAnswerToAQuestion);
 
 app.post('/api/v1/answers/:qid/:id/comments', Answercontroller.createComment);
@@ -50,6 +52,8 @@ app.post('/api/v1/answers/:qid/:id/comments', Answercontroller.createComment);
 app.get('/api/v1/answers/:qid/:id/comments', Answercontroller.getUsersComments)
 
 app.put('/api/v1/answers/:id/:userid/upvote', Answercontroller.upvoteAnswer)
+
+app.put('/api/v1/answers/:id/:userid/downvote', Answercontroller.downvoteAnswer)
 
 app.put('/api/v1/answers/:qid/:id/accept', Answercontroller.acceptAsPreferred)
 

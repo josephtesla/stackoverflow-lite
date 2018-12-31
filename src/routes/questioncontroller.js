@@ -56,14 +56,13 @@ const getTimeStamp = require('../models/helper');
   exports.searchQuestions = (req, res) => {
             //search for questions using a keyword.
     const searchQuery = req.query.s;
-    const Questions = new Model('questions');
-    const sql = `SELECT * FROM ${Questions.table} WHERE title LIKE 
-                '%${searchQuery}%' ORDER BY date_created DESC`;
-    Questions.executeQuery(sql).then(result => {
-      res.status(200).json(result);
-    }).catch(error => {
-      res.status(500).json({message:"error occured while trying to retrieve question"})
-      console.log(error.message)
+    Question.find({$text: {$search:searchQuery}})
+    .then(resp => {
+      if (resp.length){
+        res.status(200).json(resp);
+      }
+      else{
+        res.json({message:"No matched result for search"})
+      }
     })
   }
-

@@ -7,13 +7,26 @@ const getTimeStamp = require('../models/helper');
 	exports.getAnswersForAQuestion = (req, res) => {
     //answers come with the users' information 
     var question_id = req.params.id;
-    Answer.find({question_id:question_id}).sort({date_posted:-1}).then(result => {
+    Answer.find({question_id:question_id},{upvoters:0})
+    .sort({date_posted:-1}).then(result => {
       if (result.length){
         res.status(200).json({count:result.length, result: result});
       }
       res.status(201).json({count:result.length, message:"no answer for this question"})
       }).catch(error => {
         res.status(500).json({message:"error occured while trying to retrieve Answers"})
+        console.log(error.message)
+      })
+    }
+
+
+    exports.getSingleAnswer = (req, res) => {
+      //get single Answer
+      const answer_id = req.params.id;
+      Answer.findById(answer_id).then(answer => {
+        res.status(200).json(answer);
+      }).catch(error  =>  {
+        res.status(500).json({message:"error occured while trying to retrieve question"})
         console.log(error.message)
       })
     }
@@ -26,7 +39,7 @@ const getTimeStamp = require('../models/helper');
         question_id:question_id,
         answer_id:answer_id
       }
-      Comment.find(constraints)
+      Comment.find(constraints).sort({date_posted:-1})
       .then(result => {
         if (result.length){
           res.status(200).json({ count:result.length, result:result});
@@ -62,22 +75,45 @@ const getTimeStamp = require('../models/helper');
     }
 
   exports.upvoteAnswer  = (req, res) => {
+    const user_id = req.params.userid;
     const answer_id = req.params.id;
     Answer.findById(answer_id)
 		.then(result => {
-      console.log(result)
     	var currentUpvotes = parseInt(result.upvotes);
     	var newUpvotes = currentUpvotes + 1;
 			Answer.updateOne({_id: answer_id},{$set:{upvotes:newUpvotes}})
 			.then(() => {
           Answer.findById(answer_id).then(updatedrow => {
+            updatedrow.upvoters.push(user_id);
+            updatedrow.save();
             res.status(200).json({status:"updated", result:updatedrow});
           })
       }).catch(error => {
           res.status(500).json(error.message);
         })
   	})
-	}
+  }
+  
+  
+  exports.downvoteAnswer = (req, res) => {
+      const user_id = req.params.id;
+      const answer_id = req.params.id;
+      Answer.findById(answer_id)
+      .then(result => {
+        var currentUpvotes = parseInt(result.upvotes);
+        var newUpvotes = currentUpvotes - 1;
+        Answer.updateOne({_id: answer_id},{$set:{upvotes:newUpvotes}})
+        .then(() => {
+            Answer.findById(answer_id).then(updatedrow => {
+              updatedrow.upvoters.splice(updatedrow.upvoters.indexOf(user_id),1)
+              updatedrow.save();
+              res.status(200).json({status:"updated", result:updatedrow});
+            })
+        }).catch(error => {
+            res.status(500).json(error.message);
+          })
+      })
+  }
 
   exports.acceptAsPreferred = (req, res) => {
 		const answer_id = req.params.id;
