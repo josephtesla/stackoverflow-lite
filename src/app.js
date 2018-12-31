@@ -7,7 +7,8 @@ const Usercontroller = require('./routes/usercontroller');
 const verifyToken = require('./middleware/verify');
 const mongoose = require('mongoose');
 const cors = require('cors')
-mongoose.connect("mongodb://localhost/stackoverflow")
+//mongodb://<dbuser>:<dbpassword>@ds145053.mlab.com:45053/stackoverflow
+mongoose.connect("mongodb://josephtesla:tesla98@ds145053.mlab.com:45053/stackoverflow")
 .then(conn => {console.log("connected")}).catch(err => {console.log(err)})
 var app = express();
 
