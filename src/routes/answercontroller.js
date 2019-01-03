@@ -8,7 +8,7 @@ const getTimeStamp = require('../models/helper');
     //answers come with the users' information 
     var question_id = req.params.id;
     Answer.find({question_id:question_id},{upvoters:0})
-    .sort({date_posted:-1}).then(result => {
+    .sort({upvotes:-1}).then(result => {
       if (result.length){
         res.status(200).json({count:result.length, result: result});
       }

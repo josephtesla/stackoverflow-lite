@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>loading</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all,follow">
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Custom icon font-->
+    <link rel="stylesheet" href="css/fontastic.css">
+    <!-- Google fonts - Open Sans-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+    <!-- Fancybox-->
+    <link rel="stylesheet" href="vendor/@fancyapps/fancybox/jquery.fancybox.min.css">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="css/custom.css">
+   <!-- Bootstrap core CSS -->
+   <link href="md/css/bootstrap.min.css" rel="stylesheet">
+   <!-- Material Design Bootstrap -->
+   <link href="md/css/mdb.min.css" rel="stylesheet">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="favicon.png">
+    
+  </head>
+  <body>
+      <header class="header">
+          <!-- Navbar -->
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light  scrolling-navbar">
+       <div class="container">
+          <a class="navbar-brand waves-effect" href="index.html" >
+             <strong>Stackoverflow-lite</strong>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+             <i  class="fa fa-navicon fa-lg"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+             <ul  id="navuser" class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                   <a class="nav-link waves-effect" href="#">Home
+                      <span class="sr-only">(current)</span>
+                   </a>
+                </li>
+                <li class="nav-item">
+                   <a id="askbutton"  class="nav-link waves-effect" href="post.html" >Ask</a>
+                </li>
+                <li class="nav-item">
+                   <a class="nav-link waves-effect" href="index.html">Questions</a>
+                </li>
+               
+             </ul>
+             <ul class="navbar-nav nav-flex-icons">
+                <li class="nav-item">
+                   <a href="https://github.com/JosephTesla" class="nav-link waves-effect" >
+                      <i class="fa fa-github"></i>follow
+                   </a>
+                </li>
+                <li id="userone"  class="nav-item">
+                   <a href="signup.html" class="nav-link border border-light rounded waves-effect">
+                      <i class="fa fa-user"></i> Sign up
+                   </a>
+                </li>
+                <li></li>
+                <li id="usertwo"  class="nav-item">
+                   <a href="login.html" class="nav-link border border-light rounded waves-effect">
+                      <i class="fa fa-key"></i> Log in
+                   </a>
+                </li>
+             </ul>
+          </div>
+       </div>
+    </nav>
+    <!-- Navbar -->
+    
+     </header>
+  <div  id="fullbody">
+    <div class="container">
+      <div class="row">
+        <!-- Latest Posts -->
+        <main class="post blog-post col-lg-8"> 
+          <div class="container">
+              <div id="errorplace" class="alert alert-success"></div>
+            <div class="post-single" id="content">
+                
+            </div>
+            <div class="post-comments" id="answers">
+              </div>
+              <div class="add-comment">
+                <header>
+                  <h3 class="h6">Post An Answer</h3>
+                </header>
+                <form action="#" class="">
+                  
+                  <div class="row">
+                      <div class="form-group col-md-12">
+                          <div id="errorplace" class="alert alert-danger"></div>
+                          <textarea id="useranswer" class="form-control" rows="10" wrap="hard"  placeholder="start typing..."></textarea>
+                      </div>
+
+                    <div class="form-group col-md-12">
+                        <button id="submitAnsBtn" class="btn btn-info btn-md" type="submit">Submit Answer</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+          </div>
+          
+        </main>
+        <aside class="col-lg-4">
+          <!-- Widget [Search Bar Widget]-->
+          <div class="widget search">
+              <header>
+                  <h3 class="h6">Search for Questions</h3>
+                </header>
+                <form action="index.html" class="search-form">
+                  <div class="form-group">
+                    <input type="search" name="search" placeholder="what are you looking for?">
+                    <button id="searchBtn" required type="submit" class="submit"><i class="icon-search"></i></button>
+                  </div>
+                </form>
+            </div>
+            <div  id="related" class="widget">
+              <header>
+                    <h3 class="h6">Related Questions</h3>
+                </header>
+                  <ul id="related">
+                    
+                  </ul>
+           </div>
+            <div  id="recents" class="widget">
+              <header>
+                  <h3 class="h6">Recent Questions</h3>
+              </header>
+                
+              </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+    <!-- Page Footer-->
+    <footer class="main-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="logo">
+              <h6 class="text-white">StackOverflow-lite</h6>
+            </div>
+            <div class="contact-details">
+              <p>Email: <a href="mailto:godwinjoseph694@gmail.com">godwinjoseph693@gmail.com</a></p>
+              <ul class="social-menu">
+                <li class="list-inline-item"><a href="#"><i class="fa fa-facebook"></i></a></li>
+                <li class="list-inline-item"><a href="#"><i class="fa fa-twitter"></i></a></li>
+                <li class="list-inline-item"><a href="#"><i class="fa fa-instagram"></i></a></li>
+                <li class="list-inline-item"><a href="#"><i class="fa fa-behance"></i></a></li>
+                <li class="list-inline-item"><a href="#"><i class="fa fa-pinterest"></i></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="copyrights">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <p>&copy; Created by Joseph Godwin</p>
+            </div>
+            <div class="col-md-6 text-right">
+              <p><a href="https://github.com/JosephTesla" class="text-white">Go to my github page</a>
+               </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+      <!-- Spinning loader  -->
+      <section id='loader'>
+        <div class='showbox'>
+            <div class='loader'>
+                <svg class='circular' viewBox='25 25 50 50'>
+                    <circle class='path' cx='50' cy='50' r='20' fill='none' stroke-width='2' stroke-miterlimit='10'></circle>
+                </svg>
+            </div>
+        </div>
+    </section>
+     <!-- JavaScript files-->
+     
+     <script src="vendor/jquery/jquery.min.js"></script>
+     <script src="vendor/popper.js/umd/popper.min.js"> </script>
+     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+     <script src="vendor/jquery.cookie/jquery.cookie.js"> </script>
+     <script src="vendor/@fancyapps/fancybox/jquery.fancybox.min.js"></script>
+     <script src="js/front.js"></script>
+     <script src="js/helper.js"></script>
+     <script src="js/question.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="md/js/mdb.min.js"></script>
+    <!-- Initializations -->
+    <script type="text/javascript">
+       // Animations initialization
+       new WOW().init();
+    </script>
+  </body>
+</html>

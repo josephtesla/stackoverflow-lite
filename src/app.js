@@ -1,21 +1,29 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
+const mongoose = require('mongoose');
+const cors = require('cors')
 const Questioncontroller = require('./routes/questioncontroller');
 const Answercontroller = require('./routes/answercontroller');
 const Authcontroller = require('./routes/authcontroller');
 const Usercontroller = require('./routes/usercontroller');
 const verifyToken = require('./middleware/verify');
-const mongoose = require('mongoose');
-const cors = require('cors')
 //mongodb://<dbuser>:<dbpassword>@ds145053.mlab.com:45053/stackoverflow
 mongoose.connect("mongodb://josephtesla:tesla98@ds145053.mlab.com:45053/stackoverflow")
 .then(conn => {console.log("connected")}).catch(err => {console.log(err)})
+
+
 var app = express();
+app.use(express.static(path.join(__dirname, 'public')))
 
 //body-parser middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 
+
+//url for app frontend
+var front = require('../front/front');
+app.use('/',front)
 
 //Enable Cross origin resource sharing (CORS)
 app.use(cors());
@@ -75,6 +83,7 @@ app.use((error, req, res, next) => {
       },
     });
   });
+
 
 
 app.listen(process.env.PORT ||  8000  ,() =>{

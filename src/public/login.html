@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <meta http-equiv="x-ua-compatible" content="ie=edge">
+   <title>Login - StackOverflow-lite</title>
+   <script src="vendor/jquery/jquery.min.js"></script>
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Custom icon font-->
+    <link rel="stylesheet" href="css/fontastic.css">
+    <!-- Google fonts - Open Sans-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+    <!-- Fancybox-->
+    <link rel="stylesheet" href="vendor/@fancyapps/fancybox/jquery.fancybox.min.css">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="css/custom.css">
+   <!-- Bootstrap core CSS -->
+   <link href="md/css/bootstrap.min.css" rel="stylesheet">
+   <!-- Material Design Bootstrap -->
+   <link href="md/css/mdb.min.css" rel="stylesheet">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="favicon.png">
+</head>
+
+<body>
+      <header class="header">
+      <!-- Navbar -->
+      <nav class="navbar fixed-top navbar-expand-lg navbar-light  scrolling-navbar">
+         <div class="container">
+            <a class="navbar-brand waves-effect" href="index.html" >
+               <strong>Stackoverflow-lite</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+               aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+               <i  class="fa fa-navicon fa-lg"></i>
+            </button>
+            <div id="navuser" class="collapse navbar-collapse" id="navbarSupportedContent">
+               <ul class="navbar-nav mr-auto">
+                  <li class="nav-item active">
+                     <a class="nav-link waves-effect" href="#">Home
+                        <span class="sr-only">(current)</span>
+                     </a>
+                  </li>
+                  <li class="nav-item">
+                     <a id="askbutton" class="nav-link waves-effect" href="" >Ask</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link waves-effect" href="index.html">Questions</a>
+                  </li>
+               </ul>
+               <ul class="navbar-nav nav-flex-icons">
+                  <li class="nav-item">
+                     <a href="https://github.com/JosephTesla" class="nav-link waves-effect" >
+                        <i class="fa fa-github"></i>follow
+                     </a>
+                  </li>
+                  <li id="userone"  class="nav-item">
+                     <a href="signup.html" class="nav-link border border-light rounded waves-effect">
+                        <i class="fa fa-user"></i> Sign up
+                     </a>
+                  </li>
+                  <li></li>
+                  <li id="usertwo"  class="nav-item">
+                     <a href="login.html" class="nav-link border border-light rounded waves-effect">
+                        <i class="fa fa-key"></i> Log in
+                     </a>
+                  </li>
+               </ul>
+            </div>
+         </div>
+      </nav>
+      <!-- Navbar -->
+       </header>
+      <div  id="fullbody">
+       <div class="container">
+            <div class="row">
+              <!-- Latest Posts -->
+              <main class="post blog-post col-lg-8"> 
+                <div class="container">
+                  
+                       <!-- Default form login -->
+<form class="text-center border border-light p-5">
+      <div id="errorplace" class="alert alert-danger"></div>
+      <h6 class="h4 mb-4">Login to your account</h6>
+      <input type="username" id="username" class="form-control mb-4" placeholder="Username">
+      <input type="password" id="password" class="form-control mb-4" placeholder="Password">
+      <div class="d-flex justify-content-around">
+          <div>
+              <!-- Remember me -->
+              <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="defaultLoginFormRemember">
+                  <label class="custom-control-label" for="defaultLoginFormRemember">Remember me</label>
+              </div>
+          </div>
+          <div>
+              <!-- Forgot password -->
+              <a href="">Forgot password?</a>
+          </div>
+      </div>
+      <!-- Sign in button -->
+      <button id="loginBtn" class="btn btn-info btn-block my-4" type="submit">Sign in</button>
+  
+      <!-- Register -->
+      <p>Not a member?
+          <a href="signup.html">Register</a>
+      </p>
+  
+  
+  </form>
+  <!-- Default form login -->
+                </div>
+              </main>
+              <aside class="col-lg-4">
+                <!-- [Search Bar Widget]-->
+                <div class="widget search">
+                     <header>
+                           <h3 class="h6">Search for Questions</h3>
+                         </header>
+                         <form action="index.html" class="search-form">
+                           <div class="form-group">
+                             <input type="search" name="search" placeholder="what are you looking for?">
+                             <button type="submit" required class="submit"><i class="icon-search"></i></button>
+                           </div>
+                         </form>
+                  </div>
+                  <div  id="recents" class="widget">
+                        <header>
+                              <h3 class="h6">Recent Questions</h3>
+                          </header>
+                            
+                     </div>
+              </aside>
+            </div>
+          </div>
+      </div>
+          <!-- Page Footer-->
+          <footer class="main-footer">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="logo">
+                    <h6 class="text-white">StackOverflow-lite</h6>
+                  </div>
+                  <div class="contact-details">
+                    <p>Email: <a href="mailto:godwinjoseph694@gmail.com">godwinjoseph693@gmail.com</a></p>
+                    <ul class="social-menu">
+                      <li class="list-inline-item"><a href="#"><i class="fa fa-facebook"></i></a></li>
+                      <li class="list-inline-item"><a href="#"><i class="fa fa-twitter"></i></a></li>
+                      <li class="list-inline-item"><a href="#"><i class="fa fa-instagram"></i></a></li>
+                      <li class="list-inline-item"><a href="#"><i class="fa fa-behance"></i></a></li>
+                      <li class="list-inline-item"><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="copyrights">
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-6">
+                    <p>&copy; Created by Joseph Godwin</p>
+                  </div>
+                  <div class="col-md-6 text-right">
+                    <p><a href="https://github.com/JosephTesla" class="text-white">Go to my github page</a>
+                     </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </footer>
+
+   <!--/.Footer-->
+    <!-- Spinning loader  -->
+    <section id='loader'>
+      <div class='showbox'>
+          <div class='loader'>
+              <svg class='circular' viewBox='25 25 50 50'>
+                  <circle class='path' cx='50' cy='50' r='20' fill='none' stroke-width='2' stroke-miterlimit='10'></circle>
+              </svg>
+          </div>
+      </div>
+  </section>
+
+<!-- JavaScript files-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/popper.js/umd/popper.min.js"> </script>
+<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="vendor/jquery.cookie/jquery.cookie.js"> </script>
+<script src="vendor/@fancyapps/fancybox/jquery.fancybox.min.js"></script>
+<script src="js/front.js"></script>
+<script src="js/helper.js"></script>
+<script src="js/login.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="md/js/mdb.min.js"></script>
+<!-- Initializations -->
+<script type="text/javascript">
+  // Animations initialization
+  new WOW().init();
+</script>
+
+</body>
+
+</html>
