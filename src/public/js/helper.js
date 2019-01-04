@@ -1,4 +1,4 @@
-const API = 'http://stackoverflow-boi.herokuapp.com/api/v1';
+const API = 'http://localhost:8000/api/v1';
 const $errorplace = document.querySelector('#errorplace');
 const $loader = document.querySelector("#loader");
 
@@ -157,7 +157,7 @@ const loadSearchedQuestion = (query) => {
                <div class="date meta-last">${result.date_posted}</div>
                <div class="category"><a href="#"></a></div>
             </div><a id="${result._id}"  href="question.html?q=${result._id}">
-            <h3 onclick='setCurrentQuestion("${result._id.toString()}")' class="h5">${result.title}</h3></a>
+            <b>${result.title}</b>
             <div class="post-footer d-flex align-items-center"><a href="#" class="author d-flex align-items-center flex-wrap">
             <div class="title"><span>${result.user.name}</span><span>(@${result.user.username})</span></div></a>
             <div class="date"><i class="fa fa-tags"></i>${result.tags}</div>

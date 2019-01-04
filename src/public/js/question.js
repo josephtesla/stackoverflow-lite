@@ -104,7 +104,7 @@ const loadQuestionWithAnswers = () => {
              
            </div>
           <h3>${result.title}<a ><i class="fa fa-bookmark-o"></i></a></h3>
-           <div class="post-footer d-flex align-items-center flex-column flex-sm-row">
+           <div class="post-footer ">
            <a href="/${result.user.username}" class="author d-flex align-items-center flex-wrap">
                <div class="avatar"><img src="img/user.svg" alt="..." class="img-fluid"></div>
                <div class="title"><strong>${result.user.name} (@${result.user.username})</strong></div></a>
