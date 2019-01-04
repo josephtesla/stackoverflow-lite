@@ -4,8 +4,29 @@ const getTimeStamp = require('../models/helper');
 
 //functions to handle routes
     exports.getAllQuestions = (req, res) => {
-    Question.find().sort({date_posted: -1}).then(questions => {
+    Question.find().sort({date_secs: -1}).then(questions => {
       res.status(200).json(questions)
+    }).catch(error => {
+      res.status(500).json({message:"error occured while trying to retrieve questions"})
+      console.log(error.message)
+    })
+  }
+  exports.getPageQuestions = (req, res) => {
+    var perPage = req.params.ppage;
+    var page = req.params.page;
+    Question.find({})
+    .skip((perPage * page) - perPage)
+    .limit(parseInt(perPage))
+    .sort({date_secs: -1})
+    .exec().then(questions => {
+      Question.countDocuments().exec((err, count) => {
+        if (err) res.send(err)
+        res.status(200).json({
+          questions:questions,
+          current:page,
+          pages: Math.ceil(count/perPage)
+        })
+      })
     }).catch(error => {
       res.status(500).json({message:"error occured while trying to retrieve questions"})
       console.log(error.message)
@@ -21,7 +42,8 @@ const getTimeStamp = require('../models/helper');
           title:req.body.title,
           description:req.body.description,
           tags:req.body.tags,
-          date_posted:getTimeStamp()
+          date_posted:new Date().toDateString(),
+          date_secs:new Date().getTime()
         };
         Question.create(newQuestion).then(question => {
           res.status(200).json(question);

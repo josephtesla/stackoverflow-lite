@@ -8,7 +8,7 @@ const Answercontroller = require('./routes/answercontroller');
 const Authcontroller = require('./routes/authcontroller');
 const Usercontroller = require('./routes/usercontroller');
 const verifyToken = require('./middleware/verify');
-//mongodb://<dbuser>:<dbpassword>@ds145053.mlab.com:45053/stackoverflow
+//mongodb://josephtesla:tesla98@ds145053.mlab.com:45053/stackoverflow
 mongoose.connect("mongodb://josephtesla:tesla98@ds145053.mlab.com:45053/stackoverflow")
 .then(conn => {console.log("connected")}).catch(err => {console.log(err)})
 
@@ -51,6 +51,8 @@ app.delete('/api/v1/questions/:id',  Questioncontroller.deleteQuestion);
 app.get('/api/v1/questions/:id',  Questioncontroller.getSingleQuestion);
 
 app.get('/api/v1/questions/:id/answers',  Answercontroller.getAnswersForAQuestion);
+
+app.get('/api/v1/questions/:page/:ppage',  Questioncontroller.getPageQuestions);
 
 app.get('/api/v1/answers/:id',  Answercontroller.getSingleAnswer)
 

@@ -21,7 +21,7 @@ const getTimeStamp = require('../models/helper');
 						name: req.body.name,
 						username: req.body.username,
 						password: hashedPassword,
-						date_registed: getTimeStamp()
+						date_registed: new Date().toDateString()
 					}
 					User.create(newUser).then(user => {
 						//create token

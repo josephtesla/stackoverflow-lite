@@ -29,7 +29,7 @@ const loadAnswers = (id) => {
              </i><span id="upvotes-lg${answers._id}">${answers.upvotes}</span></div></div>
              <div class="title"><strong>${answers.user.name}</strong>
              <h6 class="h6">(@${answers.user.username})</h6>
-             <span class="date">${answers.date_posted}</span></div>
+             <span class="date">${displayTime(answers.date_posted,answers.date_secs)}</span></div>
            </div>
          </div>
          <div  class="comment-body">
@@ -80,7 +80,7 @@ const loadComments = (id) => {
                <div class="post-footer d-flex "><a href="#" class="author d-flex align-items-center flex-wrap">
                <div class="title"><strong>${result.user.name} (@${result.user.username})</strong></div></a>
              <div class="d-flex align-items-center flex-wrap">       
-               <div class="date"><i class="icon-clock"></i> ${result.date_posted}</div>
+               <div class="date"><i class="icon-clock"></i> ${displayTime(result.date_posted,result.date_secs)}</div>
              </div>
            </div>
                <div  class="comment-body">
@@ -105,13 +105,10 @@ const loadQuestionWithAnswers = () => {
            </div>
           <h3>${result.title}<a ><i class="fa fa-bookmark-o"></i></a></h3>
            <div class="post-footer ">
-           <a href="/${result.user.username}" class="author d-flex align-items-center flex-wrap">
-               <div class="avatar"><img src="img/user.svg" alt="..." class="img-fluid"></div>
-               <div class="title"><strong>${result.user.name} (@${result.user.username})</strong></div></a>
-             <div class="d-flex align-items-center flex-wrap">       
-               <div class="date"><i class="icon-clock"></i> ${result.date_posted}</div>
-               <div class="comments meta-last"><i class="fa fa-comments"></i><span id="counter"></span></div>
-             </div>
+           <div  class="author d-flex align-items-center flex-wrap">
+               <a href="/${result.user.username}">Asked by - <div class="title"><strong> ${result.user.name} (@${result.user.username})</strong></a> | 
+               <i class="icon-clock"></i>  ${displayTime(result.date_posted,result.date_secs)} | 
+               <i class="fa fa-comments"></i>  <span id="counter"></span></div></div>
            </div>
            <div class="post-body">
             ${result.description}

@@ -6,7 +6,8 @@ const questionSchema = new mongoose.Schema({
    tags: String,
    user: Object,
    date_posted:String,
-   preferred_id:String
+   preferred_id:String,
+   date_secs:String
 
 })
 

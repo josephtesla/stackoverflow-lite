@@ -15,18 +15,8 @@ $loginBtn.addEventListener('click', function(e){
          password:$password
       }
       console.log(formData)
-      fetch(`${API}/auth/login`, {
-         method: 'POST',
-         headers:{
-            'Content-Type': 'application/json; charset=utf-8'
-         },
-         mode: 'cors', 
-         cache: 'no-cache', 
-         credentials: 'same-origin', 
-         redirect: 'follow',
-         referrer: 'no-referrer',
-         body: JSON.stringify(formData)
-      }).then(response => response.json()).then(result => {;
+      fetch(`${API}/auth/login`, fetchParams('POST', formData))
+      .then(response => response.json()).then(result => {;
          if (result.message){
             $errorplace.innerHTML = result.message
             displayError()

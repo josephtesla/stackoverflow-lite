@@ -2,19 +2,24 @@ const Answer = require('../models/Answer');
 const Question = require('../models/Question');
 const User = require('../models/User');
 const Comment = require('../models/Comment');
-const getTimeStamp = require('../models/helper');
 //functions to handle routes		
 	exports.getAnswersForAQuestion = (req, res) => {
     //answers come with the users' information 
     var question_id = req.params.id;
     Answer.find({question_id:question_id},{upvoters:0})
-    .sort({upvotes:-1}).then(result => {
+    .sort({upvotes:-1})
+    .then(result => {
       if (result.length){
-        res.status(200).json({count:result.length, result: result});
+        res.status(200).json({
+          count:result.length,
+          result: result
+        });
       }
       res.status(201).json({count:result.length, message:"no answer for this question"})
       }).catch(error => {
-        res.status(500).json({message:"error occured while trying to retrieve Answers"})
+        res.status(500).json({
+          message:"error occured while trying to retrieve Answers"
+        })
         console.log(error.message)
       })
     }
@@ -23,7 +28,8 @@ const getTimeStamp = require('../models/helper');
     exports.getSingleAnswer = (req, res) => {
       //get single Answer
       const answer_id = req.params.id;
-      Answer.findById(answer_id).then(answer => {
+      Answer.findById(answer_id)
+      .then(answer => {
         res.status(200).json(answer);
       }).catch(error  =>  {
         res.status(500).json({message:"error occured while trying to retrieve question"})
@@ -39,7 +45,8 @@ const getTimeStamp = require('../models/helper');
         question_id:question_id,
         answer_id:answer_id
       }
-      Comment.find(constraints).sort({date_posted:-1})
+      Comment.find(constraints)
+      .sort({date_secs: -1})
       .then(result => {
         if (result.length){
           res.status(200).json({ count:result.length, result:result});
@@ -60,7 +67,8 @@ const getTimeStamp = require('../models/helper');
           question_id:req.params.id,
           upvotes: 0,
           preferred:false,
-          date_posted: getTimeStamp()
+          date_posted: new Date().toDateString(),
+          date_secs:new Date().getTime()
         };
         Answer.create(newAnswer).then(answer => {
           res.status(200).json({answer, message:"answer successfully posted!"})
@@ -136,7 +144,8 @@ const getTimeStamp = require('../models/helper');
         question_id:req.params.qid,
         answer_id:req.params.id,
         likes:0,
-        date_posted: getTimeStamp()
+        date_posted: new Date().toDateString(),
+        date_secs:new Date().getTime()
       }
       Comment.create(newComment)
       .then(result => {

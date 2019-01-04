@@ -19,18 +19,7 @@ $postBtn.addEventListener('click', function(event){
          tags:$tags,
          user_id:localStorage.getItem('userid')
       }
-      fetch(`${API}/questions`, {
-         method: 'POST',
-         headers:{
-            'Content-Type': 'application/json; charset=utf-8'
-         },
-         mode: 'cors', 
-         cache: 'no-cache', 
-         credentials: 'same-origin', 
-         redirect: 'follow',
-         referrer: 'no-referrer',
-         body: JSON.stringify(formData)
-      })
+      fetch(`${API}/questions`, fetchParams('POST', formData))
       .then(response => response.json()).then(result => {
          if (result.message) {
             $errorplace.innerHTML = result.message

@@ -7,7 +7,8 @@ const commentSchema = new mongoose.Schema({
    user: Object,
    question_id: String,
    answer_id: String,
-   likers:Array
+   likers:Array,
+   date_secs:String
 })
 
 module.exports = mongoose.model('Comment', commentSchema);

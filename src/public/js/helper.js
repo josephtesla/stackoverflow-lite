@@ -1,6 +1,6 @@
-const API = 'http://localhost:8000/api/v1';
+const API = 'http://stackoverflow-boi.herokuapp.com/api/v1';
 const $errorplace = document.querySelector('#errorplace');
-const $loader = document.querySelector("#loader");
+
 
 const getQuestionId  = ()  => {
    return window.location.search.substr(3)
@@ -21,16 +21,44 @@ const fetchParams = (method, body) => (
    })
 
 
-const spinner = () => {
-   $loader.style.display = 'none';
+function timeSince(since){
+   since = since/1000;
+   var chunks = [
+       [60 * 60 * 24 * 365, 'year'],
+       [60 * 60 * 24 * 30, 'month'],
+       [60 * 60 * 24 * 7, 'week'],
+       [60 * 60 * 24 , 'day'],
+       [60 * 60, 'hour'],
+       [60, 'min'],
+       [1,'second']
+   ];
+   
+   for (var i = 0,j = chunks.length; i < j; i++){
+       var seconds = chunks[i][0];
+       var name = chunks[i][1];
+       var count = Math.floor(since/seconds);
+       if (count  != 0){
+           break;
+       }
+   }
+   var time = [];
+   name = (count == 1)?name:`${name}s`;
+   time.push(count);
+   time.push(name);
+   var newTime = `${time[0]} ${time[1]} ago`;
+   return newTime;
 }
 
-const showSpinnerBeforeLoad = ()  => {
-   setTimeout(spinner, 1200);
-   $("#fullbody").toggle(1000)
+const displayTime =  (fulldate,timesec)  => {
+   //if timesince is less than 24hours
+   if ((new Date().getTime() - timesec) < 86400000){
+      //return in timesince format
+      return timeSince(new Date().getTime() - parseInt(timesec));
+   }
+   else{
+      return fulldate
+   }
 }
-
-showSpinnerBeforeLoad();
 
 const displayError = () => {
    $errorplace.style.display = "block";
@@ -154,7 +182,7 @@ const loadSearchedQuestion = (query) => {
             $content.innerHTML += `<div class="post col-xl-12">
             <div class="post-details"></div>
             <div class="post-meta d-flex justify-content-between">
-               <div class="date meta-last">${result.date_posted}</div>
+               <div class="date meta-last">${displayTime(result.date_posted,result.date_secs)}</div>
                <div class="category"><a href="#"></a></div>
             </div><a id="${result._id}"  href="question.html?q=${result._id}">
             <b>${result.title}</b>

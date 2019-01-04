@@ -25,18 +25,7 @@ $signupBtn.addEventListener('click', function(event){
          password:$password
       }
       console.log(formData)
-      fetch(`${API}/auth/register`, {
-         method: 'POST',
-         headers:{
-            'Content-Type': 'application/json; charset=utf-8'
-         },
-         mode: 'cors', 
-         cache: 'no-cache', 
-         credentials: 'same-origin', 
-         redirect: 'follow',
-         referrer: 'no-referrer',
-         body: JSON.stringify(formData)
-      })
+      fetch(`${API}/auth/register`,fetchParams('POST', formData))
       .then(response => response.json()).then(result => {
          console.log(result);
          if (result.message) {
