@@ -10,7 +10,7 @@ const Usercontroller = require('./routes/usercontroller');
 const verifyToken = require('./middleware/verify');
 //mongodb://josephtesla:tesla98@ds145053.mlab.com:45053/stackoverflow
 mongoose.connect("mongodb://josephtesla:tesla98@ds145053.mlab.com:45053/stackoverflow")
-.then(conn => {console.log("connected")}).catch(err => {console.log(err)})
+  .then(conn => { console.log("connected") }).catch(err => { console.log(err) })
 
 
 var app = express();
@@ -18,45 +18,45 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 //body-parser middleware
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 
 //url for app frontend
 var front = require('../front/front');
-app.use('/',front)
+app.use('/', front)
 
 //Enable Cross origin resource sharing (CORS)
 app.use(cors());
 
 //API ENDPOINTS
 //purposely placed authentication routes at the top to prevent token verification
-app.post('/api/v1/auth/register', Authcontroller.authRegister )
-app.post('/api/v1/auth/login',  Authcontroller.authLogin )
+app.post('/api/v1/auth/register', Authcontroller.authRegister)
+app.post('/api/v1/auth/login', Authcontroller.authLogin)
 
 //middleware to verify token across all routes
 //app.use(verifyToken);
 
-app.get('/api/v1/auth/me' , Authcontroller.testToken)
+app.get('/api/v1/auth/me', Authcontroller.testToken)
 
-app.get('/api/v1/users/:id',  Usercontroller.getUserprofile);
+app.get('/api/v1/users/:id', Usercontroller.getUserprofile);
 
-app.get('/api/v1/users/:id/questions',  Usercontroller.getUserQuestions);
+app.get('/api/v1/users/:id/questions', Usercontroller.getUserQuestions);
 
-app.get('/api/v1/questions' , Questioncontroller.getAllQuestions);
+app.get('/api/v1/questions', Questioncontroller.getAllQuestions);
 
-app.post('/api/v1/questions',  Questioncontroller.postQuestion);
+app.post('/api/v1/questions', Questioncontroller.postQuestion);
 
-app.delete('/api/v1/questions/:id',  Questioncontroller.deleteQuestion);
+app.delete('/api/v1/questions/:id', Questioncontroller.deleteQuestion);
 
-app.get('/api/v1/questions/:id',  Questioncontroller.getSingleQuestion);
+app.get('/api/v1/questions/:id', Questioncontroller.getSingleQuestion);
 
-app.get('/api/v1/questions/:id/answers',  Answercontroller.getAnswersForAQuestion);
+app.get('/api/v1/questions/:id/answers', Answercontroller.getAnswersForAQuestion);
 
-app.get('/api/v1/questions/:page/:ppage',  Questioncontroller.getPageQuestions);
+app.get('/api/v1/questions/:page/:ppage', Questioncontroller.getPageQuestions);
 
-app.get('/api/v1/answers/:id',  Answercontroller.getSingleAnswer)
+app.get('/api/v1/answers/:id', Answercontroller.getSingleAnswer)
 
-app.post('/api/v1/questions/:id/answers',  Answercontroller.postAnswerToAQuestion);
+app.post('/api/v1/questions/:id/answers', Answercontroller.postAnswerToAQuestion);
 
 app.post('/api/v1/answers/:qid/:id/comments', Answercontroller.createComment);
 
@@ -72,22 +72,22 @@ app.get('/api/v1/search/questions', Questioncontroller.searchQuestions);
 
 //error handlers
 app.use((req, res, next) => {
-    const error = new Error('Not found');
-    error.status = 404;
-    next(error);
+  const error = new Error('Not found');
+  error.status = 404;
+  next(error);
 });
 
 app.use((error, req, res, next) => {
-    res.status(error.status || 500);
-    res.json({
-      error: {
-        message: error.message,
-      },
-    });
+  res.status(error.status || 500);
+  res.json({
+    error: {
+      message: error.message,
+    },
   });
+});
 
 
 
-app.listen(process.env.PORT ||  8000  ,() =>{
-    console.log("server started at port: " + 8000);
+app.listen(process.env.PORT || 8000, () => {
+  console.log("server started at port: " + 8000);
 })
